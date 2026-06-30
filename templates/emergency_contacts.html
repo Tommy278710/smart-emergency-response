@@ -1,0 +1,191 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Emergency Contacts</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+}
+
+/* Sidebar */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:#020617;
+    border-right:1px solid #1e293b;
+}
+
+.logo{
+    color:white;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    padding:30px 15px;
+    border-bottom:1px solid #1e293b;
+}
+
+.sidebar a{
+    display:block;
+    color:#cbd5e1;
+    text-decoration:none;
+    padding:16px 25px;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+    color:white;
+    padding-left:35px;
+}
+
+.active{
+    background:#dc2626;
+    color:white !important;
+}
+
+/* Main */
+
+.main{
+    margin-left:250px;
+    padding:30px;
+}
+
+.header{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:white;
+}
+
+/* Table */
+
+.table-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:15px;
+    padding:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#dc2626;
+    color:white;
+    padding:15px;
+    text-align:left;
+}
+
+td{
+    padding:15px;
+    border-bottom:1px solid #334155;
+    color:#e2e8f0;
+}
+
+tr:hover{
+    background:#334155;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        SMART<br>
+        EMERGENCY
+    </div>
+
+    <a href="/dashboard/">Dashboard</a>
+    <a href="/report/">Report Emergency</a>
+    <a href="/my-reports/">My Reports</a>
+    <a href="/track-dispatch/">Track Dispatch</a>
+    <a href="/emergency-contacts/" class="active">Emergency Contacts</a>
+    <a href="/response-guidelines/">Response Guidelines</a>
+    <a href="/profile/">Profile</a>
+    <a href="/logout/">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <h1>Emergency Contact Numbers</h1>
+    </div>
+
+    <div class="table-card">
+
+        <table>
+
+            <tr>
+                <th>Service</th>
+                <th>Emergency Number</th>
+            </tr>
+
+            <tr>
+                <td>Nigeria Police Force</td>
+                <td>112</td>
+            </tr>
+
+            <tr>
+                <td>Federal Fire Service</td>
+                <td>08032003557</td>
+            </tr>
+
+            <tr>
+                <td>Federal Road Safety Corps (FRSC)</td>
+                <td>122</td>
+            </tr>
+
+            <tr>
+                <td>National Emergency Management Agency (NEMA)</td>
+                <td>112</td>
+            </tr>
+
+            <tr>
+                <td>National Ambulance Service</td>
+                <td>112</td>
+            </tr>
+
+            <tr>
+                <td>Lagos State Emergency</td>
+                <td>767</td>
+            </tr>
+
+            <tr>
+                <td>Red Cross Emergency</td>
+                <td>08037255749</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+```

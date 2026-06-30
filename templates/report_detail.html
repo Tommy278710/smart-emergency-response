@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Emergency Report Details</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+}
+
+/* Sidebar */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:#020617;
+    border-right:1px solid #1e293b;
+}
+
+.logo{
+    color:white;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    padding:30px 15px;
+    border-bottom:1px solid #1e293b;
+    line-height:1.3;
+}
+
+.sidebar a{
+    display:block;
+    color:#cbd5e1;
+    text-decoration:none;
+    padding:16px 25px;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+    color:white;
+    padding-left:35px;
+}
+
+.active{
+    background:#dc2626;
+    color:white !important;
+}
+
+/* Main */
+
+.main{
+    margin-left:250px;
+    padding:30px;
+}
+
+.back-btn{
+    display:inline-block;
+    background:#ef4444;
+    color:white;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.back-btn:hover{
+    background:#dc2626;
+}
+
+.header{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:white;
+}
+
+/* Detail Card */
+
+.detail-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-left:5px solid #ef4444;
+    border-radius:15px;
+    padding:30px;
+}
+
+.row{
+    margin-bottom:18px;
+    color:#e2e8f0;
+    font-size:16px;
+}
+
+.label{
+    color:white;
+    font-weight:bold;
+}
+
+/* Badges */
+
+.tracking{
+    background:#7f1d1d;
+    color:#fecaca;
+    padding:8px 14px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.status{
+    background:#1e40af;
+    color:#dbeafe;
+    padding:8px 14px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+hr{
+    border:none;
+    border-top:1px solid #334155;
+    margin:25px 0;
+}
+
+/* Map Button */
+
+.map-btn{
+    display:inline-block;
+    margin-top:10px;
+    background:#ef4444;
+    color:white;
+    text-decoration:none;
+    padding:12px 18px;
+    border-radius:10px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.map-btn:hover{
+    background:#dc2626;
+    box-shadow:0 0 15px rgba(239,68,68,.4);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        SMART<br>
+        EMERGENCY
+    </div>
+
+    <a href="/dashboard/">Dashboard</a>
+
+    <a href="/report/">Report Emergency</a>
+
+    <a href="/my-reports/" class="active">My Reports</a>
+
+    <a href="/track-dispatch/">Track Dispatch</a>
+
+    <a href="/emergency-contacts/">Emergency Contacts</a>
+
+    <a href="/response-guidelines/">Response Guidelines</a>
+
+    <a href="/profile/">Profile</a>
+
+    <a href="/logout/">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <a href="/my-reports/" class="back-btn">
+        ← Back to Reports
+    </a>
+
+    <div class="header">
+        <h1>Emergency Report Details</h1>
+    </div>
+
+    <div class="detail-card">
+
+        <div class="row">
+            <span class="label">Tracking ID:</span>
+            <span class="tracking">
+                {{ report.tracking_id }}
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Emergency Type:</span>
+            {{ report.emergency_type }}
+        </div>
+
+        <div class="row">
+            <span class="label">Description:</span>
+            {{ report.description }}
+        </div>
+
+        <div class="row">
+            <span class="label">State:</span>
+            {{ report.state }}
+        </div>
+
+        <div class="row">
+            <span class="label">LGA:</span>
+            {{ report.lga }}
+        </div>
+
+        <div class="row">
+            <span class="label">Address:</span>
+            {{ report.address }}
+        </div>
+
+        <div class="row">
+            <span class="label">Severity:</span>
+            {{ report.severity }}
+        </div>
+
+        <div class="row">
+            <span class="label">Status:</span>
+
+            <span class="status">
+                {{ report.status }}
+            </span>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <span class="label">Latitude:</span>
+            {{ report.latitude }}
+        </div>
+
+        <div class="row">
+            <span class="label">Longitude:</span>
+            {{ report.longitude }}
+        </div>
+
+        <div class="row">
+
+            <span class="label">
+                Google Maps:
+            </span>
+
+            <br>
+
+            <a
+                href="https://www.google.com/maps?q={{ report.latitude }},{{ report.longitude }}"
+                target="_blank"
+                class="map-btn">
+
+                View Emergency Location
+
+            </a>
+
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <span class="label">Date Submitted:</span>
+            {{ report.created_at }}
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

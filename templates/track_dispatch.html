@@ -1,0 +1,275 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Track Dispatch</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+}
+
+/* Sidebar */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:#020617;
+    border-right:1px solid #1e293b;
+}
+
+.logo{
+    color:white;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    padding:30px 15px;
+    border-bottom:1px solid #1e293b;
+}
+
+.sidebar a{
+    display:block;
+    color:#cbd5e1;
+    text-decoration:none;
+    padding:16px 25px;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+    color:white;
+    padding-left:35px;
+}
+
+.active{
+    background:#dc2626;
+    color:white !important;
+}
+
+/* Main Content */
+
+.main{
+    margin-left:250px;
+    padding:30px;
+}
+
+.header{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:white;
+}
+
+/* Search Card */
+
+.search-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:15px;
+    padding:30px;
+    margin-bottom:25px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    background:#0f172a;
+    color:white;
+    border:1px solid #475569;
+    border-radius:8px;
+    margin-bottom:15px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#ef4444;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:#dc2626;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:16px;
+}
+
+button:hover{
+    background:#b91c1c;
+}
+
+/* Report Card */
+
+.report-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-left:5px solid #ef4444;
+    border-radius:15px;
+    padding:25px;
+}
+
+.report-card p{
+    color:#e2e8f0;
+    margin-bottom:12px;
+}
+
+.label{
+    font-weight:bold;
+    color:white;
+}
+
+/* Status Colors */
+
+.pending{
+    background:#f59e0b;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+}
+
+.assigned{
+    background:#2563eb;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+}
+
+.progress{
+    background:#7c3aed;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+}
+
+.resolved{
+    background:#16a34a;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        SMART<br>
+        EMERGENCY
+    </div>
+
+    <a href="/dashboard/">Dashboard</a>
+    <a href="/report/">Report Emergency</a>
+    <a href="/my-reports/">My Reports</a>
+
+    <a href="/track-dispatch/" class="active">
+        Track Dispatch
+    </a>
+
+    <a href="/emergency-contacts/">Emergency Contacts</a>
+    <a href="/response-guidelines/">Response Guidelines</a>
+    <a href="/profile/">Profile</a>
+    <a href="/logout/">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <h1>🚑 Track Emergency Dispatch</h1>
+    </div>
+
+    <div class="search-card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="tracking_id"
+                placeholder="Enter Tracking ID (Example: ER-0001)"
+                required
+            >
+
+            <button type="submit">
+                Track Emergency
+            </button>
+
+        </form>
+
+    </div>
+
+    {% if report %}
+
+    <div class="report-card">
+
+        <p>
+            <span class="label">Tracking ID:</span>
+            {{ report.tracking_id }}
+        </p>
+
+        <p>
+            <span class="label">Emergency Type:</span>
+            {{ report.emergency_type }}
+        </p>
+
+        <p>
+            <span class="label">State:</span>
+            {{ report.state }}
+        </p>
+
+        <p>
+            <span class="label">LGA:</span>
+            {{ report.lga }}
+        </p>
+
+        <p>
+            <span class="label">Status:</span>
+
+            {% if report.status == "Pending" %}
+                <span class="pending">Pending</span>
+
+            {% elif report.status == "Assigned" %}
+                <span class="assigned">Assigned</span>
+
+            {% elif report.status == "In Progress" %}
+                <span class="progress">In Progress</span>
+
+            {% elif report.status == "Resolved" %}
+                <span class="resolved">Resolved</span>
+
+            {% endif %}
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
+```

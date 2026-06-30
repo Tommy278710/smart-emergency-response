@@ -1,0 +1,258 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    min-height:100vh;
+    padding:40px 0;
+}
+
+.container{
+    width:650px;
+    margin:auto;
+    background:#1e293b;
+    border:1px solid #334155;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 0 25px rgba(0,0,0,.35);
+}
+
+h1{
+    color:white;
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#94a3b8;
+    margin-bottom:30px;
+}
+
+label{
+    display:block;
+    color:#e2e8f0;
+    font-weight:bold;
+    margin-bottom:8px;
+    margin-top:15px;
+}
+
+input,
+select{
+    width:100%;
+    padding:14px;
+    background:#0f172a;
+    border:1px solid #475569;
+    border-radius:8px;
+    color:white;
+    font-size:15px;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:#ef4444;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:#dc2626;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:25px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#b91c1c;
+}
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#94a3b8;
+}
+
+.footer a{
+    color:#ef4444;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.footer a:hover{
+    text-decoration:underline;
+}
+
+.home-link{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    color:#94a3b8;
+    text-decoration:none;
+}
+
+.home-link:hover{
+    color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Create Account</h1>
+
+    <p class="subtitle">
+        Smart Emergency Response & Dispatch Platform
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Full Name</label>
+        {{ form.full_name }}
+
+        <label>Username</label>
+        {{ form.username }}
+
+        <label>Email Address</label>
+        {{ form.email }}
+
+        <label>Phone Number</label>
+        {{ form.phone_number }}
+
+        <label>State</label>
+
+        <select id="state" name="state">
+
+            <option value="">
+                Select State
+            </option>
+
+            {% for state, lgas in states_data.items %}
+
+            <option value="{{ state }}">
+                {{ state }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <label>LGA</label>
+
+        <select id="lga" name="lga">
+
+            <option value="">
+                Select LGA
+            </option>
+
+        </select>
+
+        <label>Password</label>
+        {{ form.password }}
+
+        <label>Confirm Password</label>
+        {{ form.confirm_password }}
+
+        <button type="submit">
+            Create Account
+        </button>
+
+    </form>
+
+    <div class="footer">
+
+        Already have an account?
+
+        <a href="/login/">
+            Login
+        </a>
+
+    </div>
+
+    <a href="/" class="home-link">
+        ← Back to Home
+    </a>
+
+</div>
+
+<script>
+
+const nigeriaData = {
+
+{% for state, lgas in states_data.items %}
+
+"{{ state }}":[
+
+{% for lga in lgas %}
+"{{ lga }}",
+{% endfor %}
+
+],
+
+{% endfor %}
+
+};
+
+const stateSelect =
+document.getElementById("state");
+
+const lgaSelect =
+document.getElementById("lga");
+
+function updateLGAs(){
+
+    const selectedState =
+    stateSelect.value;
+
+    lgaSelect.innerHTML =
+    '<option value="">Select LGA</option>';
+
+    const lgas =
+    nigeriaData[selectedState] || [];
+
+    for(let i = 0; i < lgas.length; i++){
+
+        const option =
+        document.createElement("option");
+
+        option.value =
+        lgas[i];
+
+        option.textContent =
+        lgas[i];
+
+        lgaSelect.appendChild(option);
+    }
+}
+
+stateSelect.addEventListener(
+    "change",
+    updateLGAs
+);
+
+</script>
+
+</body>
+</html>
+```

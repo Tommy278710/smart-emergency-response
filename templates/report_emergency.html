@@ -1,0 +1,402 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Report Emergency</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+}
+
+/* Sidebar */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:#020617;
+    border-right:1px solid #1e293b;
+}
+
+.logo{
+    color:white;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    padding:30px 15px;
+    border-bottom:1px solid #1e293b;
+    line-height:1.3;
+}
+
+.sidebar a{
+    display:block;
+    color:#cbd5e1;
+    text-decoration:none;
+    padding:16px 25px;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+    color:white;
+    padding-left:35px;
+}
+
+.active{
+    background:#dc2626;
+    color:white !important;
+}
+
+/* Main Content */
+
+.main{
+    margin-left:250px;
+    padding:30px;
+}
+
+/* Header */
+
+.header{
+    background:#1e293b;
+    border:1px solid #334155;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:white;
+}
+
+/* Form Card */
+
+.form-card{
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:15px;
+    padding:30px;
+}
+
+/* Labels */
+
+label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:8px;
+    font-weight:bold;
+    color:#e2e8f0;
+}
+
+/* Inputs */
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:14px;
+    border:1px solid #475569;
+    border-radius:8px;
+    background:#0f172a;
+    color:white;
+    font-size:15px;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:none;
+    border-color:#ef4444;
+}
+
+textarea{
+    min-height:140px;
+    resize:vertical;
+}
+
+/* GPS Button */
+
+.location-btn{
+    width:100%;
+    padding:14px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:8px;
+    margin-top:20px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.location-btn:hover{
+    background:#1d4ed8;
+}
+
+/* Submit Button */
+
+.submit-btn{
+    width:100%;
+    padding:15px;
+    background:#dc2626;
+    color:white;
+    border:none;
+    border-radius:8px;
+    margin-top:15px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.submit-btn:hover{
+    background:#b91c1c;
+}
+
+/* GPS Status */
+
+#gps-status{
+    margin-top:15px;
+    color:#22c55e;
+    font-weight:bold;
+}
+
+/* Card Info */
+
+.info-box{
+    background:#0f172a;
+    border:1px solid #334155;
+    color:#cbd5e1;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        SMART<br>
+        EMERGENCY
+    </div>
+
+    <a href="/dashboard/">Dashboard</a>
+
+    <a href="/report/" class="active">
+        Report Emergency
+    </a>
+
+    <a href="/my-reports/">My Reports</a>
+
+    <a href="/track-dispatch/">Track Dispatch</a>
+
+    <a href="/emergency-contacts/">Emergency Contacts</a>
+
+    <a href="/response-guidelines/">Response Guidelines</a>
+
+    <a href="/profile/">Profile</a>
+
+    <a href="/logout/">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <h1>🚨 Report Emergency</h1>
+    </div>
+
+    <div class="form-card">
+
+        <div class="info-box">
+            Fill in the emergency details accurately and capture your GPS location before submitting.
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label>Emergency Type</label>
+            {{ form.emergency_type }}
+
+            <label>Description</label>
+            {{ form.description }}
+
+            <label>State</label>
+
+            <select id="state" name="state" onchange="updateLGAs()">
+
+                <option value="">
+                    Select State
+                </option>
+
+                {% for state, lgas in states_data.items %}
+
+                <option value="{{ state }}">
+                    {{ state }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <label>LGA</label>
+
+            <select id="lga" name="lga">
+
+                <option value="">
+                    Select LGA
+                </option>
+
+            </select>
+
+            <label>Address</label>
+            {{ form.address }}
+
+            <label>Severity Level</label>
+            {{ form.severity }}
+
+            <input
+                type="hidden"
+                id="latitude"
+                name="latitude"
+            >
+
+            <input
+                type="hidden"
+                id="longitude"
+                name="longitude"
+            >
+
+            <button
+                type="button"
+                class="location-btn"
+                onclick="getLocation()">
+
+                📍 Detect My GPS Location
+
+            </button>
+
+            <p id="gps-status"></p>
+
+            <button
+                type="submit"
+                class="submit-btn">
+
+                Submit Emergency Report
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+const nigeriaData = {
+
+{% for state, lgas in states_data.items %}
+
+"{{ state }}":[
+
+{% for lga in lgas %}
+"{{ lga }}",
+{% endfor %}
+
+],
+
+{% endfor %}
+
+};
+
+function updateLGAs(){
+
+    let stateSelect =
+        document.getElementById("state");
+
+    let lgaSelect =
+        document.getElementById("lga");
+
+    let selectedState =
+        stateSelect.value;
+
+    lgaSelect.innerHTML =
+        "<option value=''>Select LGA</option>";
+
+    if(selectedState in nigeriaData){
+
+        nigeriaData[selectedState].forEach(
+            function(lga){
+
+                let option =
+                    document.createElement("option");
+
+                option.value = lga;
+                option.text = lga;
+
+                lgaSelect.appendChild(option);
+
+            }
+        );
+    }
+}
+
+function getLocation(){
+
+    if(navigator.geolocation){
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position){
+
+                document.getElementById(
+                    "latitude"
+                ).value =
+                position.coords.latitude;
+
+                document.getElementById(
+                    "longitude"
+                ).value =
+                position.coords.longitude;
+
+                document.getElementById(
+                    "gps-status"
+                ).innerHTML =
+                "✓ GPS location captured successfully";
+
+            },
+
+            function(){
+
+                document.getElementById(
+                    "gps-status"
+                ).innerHTML =
+                "✗ Unable to get GPS location";
+
+            }
+
+        );
+
+    }
+}
+
+</script>
+
+</body>
+</html>
+```
